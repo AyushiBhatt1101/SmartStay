@@ -1,64 +1,199 @@
 # SmartStay
 
-SmartStay is a React web application for showcasing and managing homestay bookings with a polished UI built using Tailwind CSS.
+SmartStay is a responsive homestay management web application designed to simplify property listings, booking management, and guest interactions. The project is being developed as part of the TBI GEU Summer Internship Program 2026 and focuses on creating a modern, user-friendly platform for homestay owners and travelers.
 
 ## Features
 
-- **Listing Browsing**: View a curated set of homestays in a responsive listing page.
-- **Detailed Homestay Pages**: See full details, amenities, pricing, and booking actions for each property.
-- **Authentication UI**: Login and register pages with form-driven UI states.
-- **Host Dashboard**: Display static host metrics and recent bookings in dashboard format.
-- **Static Sample Data**: The current version uses hardcoded sample homestay and dashboard data.
+### Homestay Listings
+
+* Browse featured homestays in a responsive grid layout.
+* View essential details such as location, pricing, and availability.
+* Clean and user-friendly card-based design.
+
+### Property Details
+
+* Dedicated detail pages for individual homestays.
+* Display accommodation information, amenities, and pricing details.
+
+### Authentication UI
+
+* Login page for existing users.
+* Registration page for new users.
+* Form-based user interface for future authentication integration.
+
+### Host Dashboard
+
+* Booking statistics and occupancy insights.
+* Recent bookings table.
+* Dashboard widgets and summary cards.
+
+### Responsive Design
+
+* Mobile View (375px)
+* Tablet View (768px)
+* Desktop View (1440px)
+
+### Dark / Light Mode
+
+* Theme toggle functionality.
+* Theme preference stored in localStorage.
+* Consistent experience across all pages and components.
+
+### Reusable UI Component Library
+
+Located in `src/components/ui`
+
+* Button Component
+* Input Component
+* Modal Component
+* Toast Component
+* Loader Component
+
+All components are reusable, documented using JSDoc comments, and designed to support future scalability.
+
+---
 
 ## Pages
 
-- **Home**: Landing page with hero section, featured homestays, feature cards, and footer.
-- **Login**: Authentication form UI for returning users.
-- **Register**: New account registration form UI.
-- **Listings**: Grid of available homestays with navigation to details.
-- **Details**: Detailed property page for a selected homestay.
-- **Dashboard**: Host dashboard with metrics and recent bookings.
-- **About**: Informational page about the app.
-- **NotFound**: Fallback route for unknown URLs.
+### Home
 
-## Getting Started
+Landing page featuring:
 
-To run the project locally:
+* Navbar
+* Hero Section
+* Featured Homestays
+* Feature Highlights
+* Footer
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/smartstay.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd smartstay
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-4. Start the development server:
-   ```bash
-   npm start
-   ```
+### Login
+
+User authentication interface.
+
+### Register
+
+New user registration interface.
+
+### Listings
+
+Browse available homestays.
+
+### Details
+
+Detailed view of a selected homestay.
+
+### Dashboard
+
+Host management dashboard with metrics and booking information.
+
+### About
+
+Information about the SmartStay platform.
+
+### Not Found
+
+Fallback page for invalid routes.
+
+---
 
 ## Tech Stack
 
-- **Frontend**: React
-- **Routing**: React Router DOM
-- **Styling**: Tailwind CSS
-- **Build**: Create React App
+### Frontend
 
-## Notes
+* React.js
+* React Router DOM
+* Tailwind CSS
 
-- The application currently uses static sample data for listings, details, and dashboard metrics.
-- Authentication and booking workflows are UI-only placeholders and do not connect to a backend yet.
+### Development Tools
 
-## Learnings
+* Git
+* GitHub
+* VS Code
 
-This project is useful for practicing:
+---
 
-- React component composition
-- Routing with `react-router-dom`
-- Styling with Tailwind CSS
-- Building responsive UI layouts
+## Week 3 Deliverables
+
+### Figma Wireframes
+
+Created low-fidelity wireframes for:
+
+* Home Screen
+* Dashboard
+* Listings / Detail View
+* Login / Signup
+* AI Feature Screen
+
+### Component Library
+
+Implemented:
+
+* Button
+* Input
+* Modal
+* Toast
+* Loader
+
+### Responsive Testing
+
+Verified layouts across:
+
+* Mobile (375px)
+* Tablet (768px)
+* Desktop (1440px)
+
+### Theme Support
+
+Implemented:
+
+* Dark Mode
+* Light Mode
+* Persistent theme preference using localStorage
+
+---
+
+## Getting Started
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/AyushiBhatt1101/SmartStay.git
+```
+
+### Navigate to Project Directory
+
+```bash
+cd SmartStay
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Start Development Server
+
+```bash
+npm start
+```
+
+---
+
+## Future Enhancements
+
+* Backend integration using Node.js and Express
+* Database connectivity with MongoDB Atlas
+* User authentication and authorization
+* Booking management system
+* Payment gateway integration
+* AI-powered review analysis
+* Personalized homestay recommendations
+* Trip planning assistance
+
+---
+
+## Author
+
+Ayushi Bhatt
+B.Tech Computer Science Engineering
+TBI GEU Summer Internship Program 2026
