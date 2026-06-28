@@ -3,13 +3,13 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import HomestayCard from '../components/HomestayCard';
+import Loader from '../components/ui/Loader';
+import Toast from '../components/ui/Toast';
+import useApi from '../hooks/useApi';
 
 const Home = () => {
-    const featuredStays = [
-        { id: 1, name: 'Mountain View Homestay', location: 'Chopta', price: '₹1,500' },
-        { id: 2, name: 'Lakeside Retreat', location: 'Nainital', price: '₹2,000' },
-        { id: 3, name: 'Beachfront Villa', location: 'Goa', price: '₹3,000' },
-    ];
+    const { data, loading, error } = useApi('/api/homestays');
+    const featuredStays = data ? data.slice(0, 3) : [];
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -24,11 +24,17 @@ const Home = () => {
                             Explore our top homestays, all designed to make your next stay comfortable and memorable.
                         </p>
                     </div>
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {featuredStays.map((stay) => (
-                            <HomestayCard key={stay.id} name={stay.name} location={stay.location} price={stay.price} />
-                        ))}
-                    </div>
+                    {loading ? (
+                        <div className="flex justify-center py-14">
+                            <Loader size={48} />
+                        </div>
+                    ) : (
+                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {featuredStays.map((stay) => (
+                                <HomestayCard key={stay.id} id={stay.id} name={stay.name} location={stay.location} price={`₹${stay.price}`} />
+                            ))}
+                        </div>
+                    )}
                 </section>
 
                 <section className="grid gap-6 lg:grid-cols-3">
@@ -53,6 +59,7 @@ const Home = () => {
                 </section>
             </main>
             <Footer />
+            <Toast message={error || ''} variant="error" visible={Boolean(error)} />
         </div>
     );
 };

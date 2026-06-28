@@ -1,0 +1,344 @@
+{
+  "info": {
+    "name": "SmartStay API Collection",
+    "description": "Complete REST API collection for SmartStay homestay management platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET - List All Homestays",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/homestays",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "homestays"]
+        },
+        "description": "Retrieve a list of all homestays from the database"
+      },
+      "response": [
+        {
+          "name": "200 OK - List All Homestays",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/homestays",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "homestays"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "body": "{\"success\":true,\"data\":[{\"id\":1,\"name\":\"Mountain View Homestay\",\"location\":\"Chopta\",\"price\":1500,\"description\":\"Beautiful mountain view with cozy rooms\",\"image\":\"🏔️\",\"amenities\":[\"WiFi\",\"Parking\",\"Hot Water\",\"Kitchen Access\",\"Garden\",\"Fireplace\"],\"rating\":4.8,\"reviews\":125},{\"id\":2,\"name\":\"Lakeside Retreat\",\"location\":\"Nainital\",\"price\":2000,\"description\":\"Peaceful lakeside cottage\",\"image\":\"🏞️\",\"amenities\":[\"WiFi\",\"Parking\",\"Boat Access\",\"Restaurant\",\"Swimming\",\"Spa\"],\"rating\":4.9,\"reviews\":89},{\"id\":3,\"name\":\"Forest Cabin\",\"location\":\"Munnar\",\"price\":1800,\"description\":\"Nature's sanctuary in the hills\",\"image\":\"🌲\",\"amenities\":[\"WiFi\",\"Parking\",\"Tea Garden Tour\",\"Bonfire\",\"Hiking Trails\"],\"rating\":4.7,\"reviews\":156},{\"id\":4,\"name\":\"Beachfront Villa\",\"location\":\"Goa\",\"price\":3000,\"description\":\"Stunning beach views and sunset\",\"image\":\"🏖️\",\"amenities\":[\"WiFi\",\"Parking\",\"Beach Access\",\"Pool\",\"Gym\",\"Restaurant\"],\"rating\":4.9,\"reviews\":234}]}"
+        }
+      ]
+    },
+    {
+      "name": "GET - Get Single Homestay by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/homestays/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "homestays", "1"]
+        },
+        "description": "Retrieve a single homestay by its ID"
+      },
+      "response": [
+        {
+          "name": "200 OK - Get Single Homestay",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/homestays/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "homestays", "1"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "body": "{\"success\":true,\"data\":{\"id\":1,\"name\":\"Mountain View Homestay\",\"location\":\"Chopta\",\"price\":1500,\"description\":\"Beautiful mountain view with cozy rooms\",\"image\":\"🏔️\",\"amenities\":[\"WiFi\",\"Parking\",\"Hot Water\",\"Kitchen Access\",\"Garden\",\"Fireplace\"],\"rating\":4.8,\"reviews\":125}}"
+        }
+      ]
+    },
+    {
+      "name": "GET - Search Homestays by Query",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/homestays?q=lake",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "homestays"],
+          "query": [
+            {
+              "key": "q",
+              "value": "lake"
+            }
+          ]
+        },
+        "description": "Search for homestays by name, description, or location using query parameter"
+      },
+      "response": [
+        {
+          "name": "200 OK - Search Results",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/homestays?q=lake",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "homestays"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "lake"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "body": "{\"success\":true,\"data\":[{\"id\":2,\"name\":\"Lakeside Retreat\",\"location\":\"Nainital\",\"price\":2000,\"description\":\"Peaceful lakeside cottage\",\"image\":\"🏞️\",\"amenities\":[\"WiFi\",\"Parking\",\"Boat Access\",\"Restaurant\",\"Swimming\",\"Spa\"],\"rating\":4.9,\"reviews\":89}]}"
+        }
+      ]
+    },
+    {
+      "name": "POST - Create New Homestay",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Hillside Cottage\",\"location\":\"Ooty\",\"price\":1900,\"description\":\"Cozy cottage with hill views and fresh air\",\"image\":\"🏘️\",\"amenities\":[\"WiFi\",\"Parking\",\"Garden\",\"Fireplace\"]}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/homestays",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "homestays"]
+        },
+        "description": "Create a new homestay entry with required fields: name, location, price, description"
+      },
+      "response": [
+        {
+          "name": "201 Created - New Homestay",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"Hillside Cottage\",\"location\":\"Ooty\",\"price\":1900,\"description\":\"Cozy cottage with hill views and fresh air\",\"image\":\"🏘️\",\"amenities\":[\"WiFi\",\"Parking\",\"Garden\",\"Fireplace\"]}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/homestays",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "homestays"]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "body": "{\"success\":true,\"data\":{\"id\":5,\"name\":\"Hillside Cottage\",\"location\":\"Ooty\",\"price\":1900,\"description\":\"Cozy cottage with hill views and fresh air\",\"image\":\"🏘️\",\"amenities\":[\"WiFi\",\"Parking\",\"Garden\",\"Fireplace\"],\"rating\":0,\"reviews\":0}}"
+        }
+      ]
+    },
+    {
+      "name": "PUT - Update Homestay",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"price\":1600,\"rating\":4.7,\"reviews\":87}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/homestays/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "homestays", "1"]
+        },
+        "description": "Update an existing homestay by ID with partial or full data"
+      },
+      "response": [
+        {
+          "name": "200 OK - Updated Homestay",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"price\":1600,\"rating\":4.7,\"reviews\":87}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/homestays/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "homestays", "1"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "body": "{\"success\":true,\"data\":{\"id\":1,\"name\":\"Mountain View Homestay\",\"location\":\"Chopta\",\"price\":1600,\"description\":\"Beautiful mountain view with cozy rooms\",\"image\":\"🏔️\",\"amenities\":[\"WiFi\",\"Parking\",\"Hot Water\",\"Kitchen Access\",\"Garden\",\"Fireplace\"],\"rating\":4.7,\"reviews\":87}}"
+        }
+      ]
+    },
+    {
+      "name": "DELETE - Remove Homestay",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/homestays/5",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "homestays", "5"]
+        },
+        "description": "Delete a homestay by ID. Returns 204 No Content on success"
+      },
+      "response": [
+        {
+          "name": "204 No Content - Deleted",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/homestays/5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "homestays", "5"]
+            }
+          },
+          "status": "No Content",
+          "code": 204,
+          "header": [],
+          "body": ""
+        }
+      ]
+    },
+    {
+      "name": "GET - Filter by Location",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/homestays?location=Goa",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "homestays"],
+          "query": [
+            {
+              "key": "location",
+              "value": "Goa"
+            }
+          ]
+        },
+        "description": "Filter homestays by location using query parameter"
+      },
+      "response": [
+        {
+          "name": "200 OK - Filtered by Location",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/homestays?location=Goa",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "homestays"],
+              "query": [
+                {
+                  "key": "location",
+                  "value": "Goa"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            }
+          ],
+          "body": "{\"success\":true,\"data\":[{\"id\":4,\"name\":\"Beachfront Villa\",\"location\":\"Goa\",\"price\":3000,\"description\":\"Stunning beach views and sunset\",\"image\":\"🏖️\",\"amenities\":[\"WiFi\",\"Parking\",\"Beach Access\",\"Pool\",\"Gym\",\"Restaurant\"],\"rating\":4.9,\"reviews\":234}]}"
+        }
+      ]
+    }
+  ]
+}

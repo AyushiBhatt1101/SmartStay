@@ -171,9 +171,40 @@ cd SmartStay
 npm install
 ```
 
-### Start Development Server
+### Start Frontend Development Server
+
+From the project root, run:
 
 ```bash
+npm install
+npm start
+```
+
+The frontend will be available at `http://localhost:3000`.
+
+### How to run backend locally
+
+Open a new terminal in the project root and run:
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+The backend server will start at `http://localhost:5000`.
+
+Useful notes:
+
+- The backend uses Express and serves homestay data through API endpoints such as `/api/homestays` and `/api/homestays/:id`.
+- The default port is `5000`, and it can be changed using the `PORT` variable in the backend `.env` file.
+- The frontend is configured to connect to the backend via `FRONTEND_URL` in the backend environment settings.
+
+If you want to run the backend in production mode:
+
+```bash
+cd backend
 npm start
 ```
 
