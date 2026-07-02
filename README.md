@@ -246,5 +246,7 @@ npm start
 ## Author
 
 Ayushi Bhatt
+
 B.Tech Computer Science Engineering
+
 TBI GEU Summer Internship Program 2026
