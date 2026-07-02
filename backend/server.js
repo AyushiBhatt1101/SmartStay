@@ -1,8 +1,36 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const Homestay = require('./models/Homestay');
 
 dotenv.config();
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(async () => {
+    console.log("✅ MongoDB Connected Successfully");
+
+    try {
+      const homestayCount = await Homestay.countDocuments();
+
+      if (homestayCount === 0) {
+        const seedData = homestays.map(({ id, ...stay }) => stay);
+        await Homestay.insertMany(seedData);
+        console.log("✅ Seeded homestays into MongoDB");
+      } else {
+        console.log("ℹ️ Homestays already exist in MongoDB");
+      }
+    } catch (err) {
+      console.error("❌ Error seeding homestays");
+      console.error(err);
+    }
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB Connection Failed");
+    console.error(err);
+    process.exit(1);
+  });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -39,7 +67,7 @@ let homestays = [
     name: 'Forest Cabin',
     location: 'Munnar',
     price: 1800,
-    description: 'Nature\'s sanctuary in the hills',
+    description: "Nature's sanctuary in the hills",
     image: '🌲',
     amenities: ['WiFi', 'Parking', 'Tea Garden Tour', 'Bonfire', 'Hiking Trails'],
     rating: 4.7,
@@ -58,104 +86,166 @@ let homestays = [
   },
 ];
 
-const getNextId = () => (homestays.length > 0 ? Math.max(...homestays.map((stay) => stay.id)) + 1 : 1);
+const getNextId = () =>
+  homestays.length > 0
+    ? Math.max(...homestays.map((stay) => stay.id)) + 1
+    : 1;
 
-app.get('/api/homestays', (req, res) => {
+app.get('/api/homestays', async (req, res) => {
   const { q, location } = req.query;
-  let results = [...homestays];
+  const filter = {};
 
   if (q) {
-    const query = q.toLowerCase();
-    results = results.filter((stay) =>
-      stay.name.toLowerCase().includes(query) ||
-      stay.description.toLowerCase().includes(query) ||
-      stay.location.toLowerCase().includes(query)
-    );
+    filter.$or = [
+      { name: { $regex: q, $options: 'i' } },
+      { description: { $regex: q, $options: 'i' } },
+      { location: { $regex: q, $options: 'i' } },
+    ];
   }
 
   if (location) {
-    results = results.filter((stay) => stay.location.toLowerCase() === location.toLowerCase());
+    filter.location = { $regex: `^${location}$`, $options: 'i' };
   }
+
+  const results = await Homestay.find(filter);
 
   res.status(200).json({ success: true, data: results });
 });
 
-app.get('/api/homestays/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const stay = homestays.find((item) => item.id === id);
+app.get('/api/homestays/:id', async (req, res) => {
+  const id = req.params.id;
 
-  if (!stay) {
-    return res.status(404).json({ success: false, message: 'Homestay not found' });
+  try {
+    const stay = await Homestay.findById(id);
+
+    if (!stay) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Homestay not found' });
+    }
+
+    res.status(200).json({ success: true, data: stay });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch homestay',
+    });
   }
-
-  res.status(200).json({ success: true, data: stay });
 });
 
-app.post('/api/homestays', (req, res) => {
+app.post('/api/homestays', async (req, res) => {
   const { name, location, price, description, image, amenities } = req.body;
 
   if (!name || !location || !price || !description) {
-    return res.status(400).json({ success: false, message: 'Missing required fields: name, location, price, description' });
+    return res.status(400).json({
+      success: false,
+      message: 'Missing required fields: name, location, price, description',
+    });
   }
 
-  const newStay = {
-    id: getNextId(),
+  try {
+    const newStay = new Homestay({
+      name,
+      location,
+      price,
+      description,
+      image: image || '🏡',
+      amenities: Array.isArray(amenities) ? amenities : [],
+      rating: 0,
+      reviews: 0,
+    });
+
+    const savedStay = await newStay.save();
+
+    res.status(201).json({
+      success: true,
+      data: savedStay,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to create homestay',
+    });
+  }
+});
+
+app.put('/api/homestays/:id', async (req, res) => {
+  const id = req.params.id;
+
+  const {
     name,
     location,
     price,
     description,
-    image: image || '🏡',
-    amenities: Array.isArray(amenities) ? amenities : [],
-    rating: 0,
-    reviews: 0,
-  };
+    image,
+    amenities,
+    rating,
+    reviews,
+  } = req.body;
 
-  homestays.push(newStay);
-  res.status(201).json({ success: true, data: newStay });
+  try {
+    const updatedStay = await Homestay.findByIdAndUpdate(
+      id,
+      {
+        name,
+        location,
+        price,
+        description,
+        image,
+        amenities,
+        rating,
+        reviews,
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedStay) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Homestay not found' });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: updatedStay,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update homestay',
+    });
+  }
 });
 
-app.put('/api/homestays/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const stayIndex = homestays.findIndex((item) => item.id === id);
+app.delete('/api/homestays/:id', async (req, res) => {
+  const id = req.params.id;
 
-  if (stayIndex === -1) {
-    return res.status(404).json({ success: false, message: 'Homestay not found' });
+  try {
+    const deletedStay = await Homestay.findByIdAndDelete(id);
+
+    if (!deletedStay) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Homestay not found' });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete homestay',
+    });
   }
-
-  const { name, location, price, description, image, amenities, rating, reviews } = req.body;
-  const updatedStay = {
-    ...homestays[stayIndex],
-    name: name ?? homestays[stayIndex].name,
-    location: location ?? homestays[stayIndex].location,
-    price: price ?? homestays[stayIndex].price,
-    description: description ?? homestays[stayIndex].description,
-    image: image ?? homestays[stayIndex].image,
-    amenities: amenities ?? homestays[stayIndex].amenities,
-    rating: rating ?? homestays[stayIndex].rating,
-    reviews: reviews ?? homestays[stayIndex].reviews,
-  };
-
-  homestays[stayIndex] = updatedStay;
-  res.status(200).json({ success: true, data: updatedStay });
-});
-
-app.delete('/api/homestays/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const stayIndex = homestays.findIndex((item) => item.id === id);
-
-  if (stayIndex === -1) {
-    return res.status(404).json({ success: false, message: 'Homestay not found' });
-  }
-
-  homestays.splice(stayIndex, 1);
-  res.status(204).send();
 });
 
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).json({ success: false, message: 'Internal server error' });
+  res.status(500).json({
+    success: false,
+    message: 'Internal server error',
+  });
 });
 
 app.listen(PORT, () => {
-  console.log(`SmartStay backend running on http://localhost:${PORT}`);
+  console.log(`🚀 SmartStay backend running on http://localhost:${PORT}`);
 });

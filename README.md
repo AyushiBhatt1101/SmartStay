@@ -103,51 +103,61 @@ Fallback page for invalid routes.
 * React Router DOM
 * Tailwind CSS
 
+### Backend
+
+* Node.js
+* Express.js
+
+### Database
+
+* MongoDB Atlas
+* Mongoose ODM
+
 ### Development Tools
 
 * Git
 * GitHub
 * VS Code
 
----
 
-## Week 3 Deliverables
+### Database Choice and Why
 
-### Figma Wireframes
+MongoDB Atlas was selected because SmartStay stores flexible, document-based homestay information such as names, locations, prices, amenities, ratings, and reviews. It integrates seamlessly with Node.js and Express using Mongoose and provides scalable CRUD operations for the application.
 
-Created low-fidelity wireframes for:
+### Schema Diagram
 
-* Home Screen
-* Dashboard
-* Listings / Detail View
-* Login / Signup
-* AI Feature Screen
+The current implementation contains a single MongoDB collection named **Homestay**.
 
-### Component Library
+![Homestay schema diagram](W5_SchemaDiagram_TBI-26100239.png)
 
-Implemented:
+### Set up the Database
 
-* Button
-* Input
-* Modal
-* Toast
-* Loader
+1. Create a MongoDB Atlas account and a new cluster.
+2. Create a database user and whitelist your current IP address.
+3. Copy the connection string and add it to the backend environment file:
 
-### Responsive Testing
+```bash
+cd backend
+cp .env.example .env
+```
 
-Verified layouts across:
+Then update the file with your MongoDB connection string:
 
-* Mobile (375px)
-* Tablet (768px)
-* Desktop (1440px)
+```env
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/smartstay
+```
 
-### Theme Support
+4. Optional: set the frontend URL for CORS in the same file:
 
-Implemented:
+```env
+FRONTEND_URL=http://localhost:3000
+```
 
-* Dark Mode
-* Light Mode
-* Persistent theme preference using localStorage
+5. Start the backend server. The application will connect to MongoDB and seed sample homestay data automatically if the database is empty.
+
+```bash
+npm run dev
+```
 
 ---
 
@@ -176,7 +186,6 @@ npm install
 From the project root, run:
 
 ```bash
-npm install
 npm start
 ```
 
@@ -210,13 +219,24 @@ npm start
 
 ---
 
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/homestays | Get all homestays |
+| GET | /api/homestays/:id | Get a homestay by ID |
+| POST | /api/homestays | Create a new homestay |
+| PUT | /api/homestays/:id | Update a homestay |
+| DELETE | /api/homestays/:id | Delete a homestay |
+
+---
+
 ## Future Enhancements
 
-* Backend integration using Node.js and Express
-* Database connectivity with MongoDB Atlas
 * User authentication and authorization
-* Booking management system
-* Payment gateway integration
+* Homestay booking management
+* Wishlist functionality
+* User profile management
 * AI-powered review analysis
 * Personalized homestay recommendations
 * Trip planning assistance

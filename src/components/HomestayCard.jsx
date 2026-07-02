@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-const HomestayCard = ({ id, name, location, price }) => {
+const HomestayCard = ({ _id, name, location, price }) => {
     const history = useHistory();
 
     const handleViewDetails = () => {
-        history.push(`/details/${id}`);
+        history.push(`/details/${_id}`);
     };
 
     return (
